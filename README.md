@@ -1,4 +1,4 @@
-# stress
+# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)
 
 stress is an HTTP stress testing tool. Through this tool, you can do a stress test on the HTTP service and get detailed test results. It is inspired by hey.
 
