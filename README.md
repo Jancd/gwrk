@@ -4,7 +4,9 @@ stress is an HTTP stress testing tool. Through this tool, you can do a stress te
 
 ## Installation
 
-    go get -u github.com/SergeyChang/stress
+```
+go get -u github.com/7Ethan/stress
+```
  
 ## Features
  
@@ -75,7 +77,7 @@ stress -n 1000 -c 10 -enable-tran http://localhost:8080,m:post,b:hi,x:http://127
 
 For example: run a task.
 
-```
+```go
 package main
 
 import (
@@ -107,7 +109,7 @@ func main() {
 
 For example: run a transactional request composed of multiple URL.
 
-```
+```go
 package main
 
 import (
@@ -137,7 +139,9 @@ func main() {
 }
 
 ```
+
 Add event handling. Make some extra processing before each request, such as setting a different header or request body at a time.
+
 ```
 package main
 
