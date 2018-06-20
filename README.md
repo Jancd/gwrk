@@ -1,4 +1,4 @@
-# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)
+# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress)
 
 stress is an HTTP stress testing tool. Through this tool, you can do a stress test on the HTTP service and get detailed test results. It is inspired by hey.
 
@@ -142,7 +142,7 @@ func main() {
 
 Add event handling. Make some extra processing before each request, such as setting a different header or request body at a time.
 
-```
+```go
 package main
 
 import (
@@ -186,4 +186,4 @@ func main() {
 
 ## License
 
-stress source code is licensed under the Apache Licence, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html).
+stress source code is licensed under the Apache Licence, [Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
