@@ -1,5 +1,4 @@
-# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress) 
-[![GitHub license](https://img.shields.io/github/license/7Ethan/stress.svg)](https://github.com/7Ethan/stress/blob/master/LICENSE)
+# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress)   [![GitHub license](https://img.shields.io/github/license/7Ethan/stress.svg)](https://github.com/7Ethan/stress/blob/master/LICENSE)
 
 
 stress is an HTTP stress testing tool. Through this tool, you can do a stress test on the HTTP service and get detailed test results. It is inspired by hey.
