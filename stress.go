@@ -15,37 +15,14 @@ import (
 	s "github.com/7Ethan/stress/stress"
 )
 
-// var (
-// 	m = flag.String("m", "GET", "")
-// 	// headers  = flag.String("h", "", "")
-// 	body     = flag.String("b", "", "")
-// 	bodyFile = flag.String("B", "", "")
-
-// 	output    = flag.String("o", "", "")
-// 	proxyAddr = flag.String("x", "", "")
-// 	host      = flag.String("host", "", "")
-
-// 	n         = flag.Int("n", 100, "")
-// 	c         = flag.Int("c", 10, "")
-// 	t         = flag.Int("t", 20, "")
-// 	d         = flag.Int("d", 0, "")
-// 	thinkTime = flag.Int("think-time", 0, "")
-
-// 	h2                 = flag.Bool("h2", false, "")
-// 	disableCompression = flag.Bool("disable-compression", false, "")
-// 	disableKeepalive   = flag.Bool("disable-keepalive", false, "")
-// 	disableRedirects   = flag.Bool("disable-redirects", false, "")
-// 	enableTran         = flag.Bool("enable-tran", false, "")
-// )
-
 var (
-	m = flag.String("m", "GET", "HTTP method, any of GET, POST, PUT, DELETE, HEAD, OPTIONS.\n Default value is GET")
+	m = flag.String("m", "GET", "")
 	// headers  = flag.String("h", "", "")
-	body     = flag.String("b", "", "HTTP request body.")
-	bodyFile = flag.String("B", "", "HTTP request body from file. For example: \n/home/user/file.txt or ./file.txt.")
+	body     = flag.String("b", "", "")
+	bodyFile = flag.String("B", "", "")
 
-	output    = flag.String("o", "", "Output file path. For example: /home/user or ./files.")
-	proxyAddr = flag.String("x", "", "HTTP Proxy address as host:port.")
+	output    = flag.String("o", "", "")
+	proxyAddr = flag.String("x", "", "")
 	host      = flag.String("host", "", "")
 
 	n         = flag.Int("n", 100, "")
@@ -59,8 +36,55 @@ var (
 	disableKeepalive   = flag.Bool("disable-keepalive", false, "")
 	disableRedirects   = flag.Bool("disable-redirects", false, "")
 	enableTran         = flag.Bool("enable-tran", false, "")
-	flag.Usage = usage
 )
+
+// var (
+// 	h = flag.Bool("h", false, " this help")
+// 	m = flag.String("m", "GET", "HTTP method, any of GET, POST, PUT, DELETE, HEAD, OPTIONS.\n Default value is GET")
+// 	// headers  = flag.String("h", "", "")
+// 	body     = flag.String("b", "", "HTTP request body.")
+// 	bodyFile = flag.String("B", "", "HTTP request body from file. For example: \n/home/user/file.txt or ./file.txt.")
+
+// 	output    = flag.String("o", "", "Output file path. For example: /home/user or ./files.")
+// 	proxyAddr = flag.String("x", "", "HTTP Proxy address as host:port.")
+// 	host      = flag.String("host", "", "Set HTTP Host header.")
+
+// 	n = flag.Int("n", 100, `Number of requests to run. Default value is 100.\n
+// 									If set to -1, the request has been sent, but the report will \n
+// 									not be output by default.`)
+// 	c = flag.Int("c", 10, `Number of requests to run concurrently. \n
+// 								   Total number of requests cannot smaller than the concurrency level. \n
+// 								   Default value is 10.`)
+// 	t = flag.Int("t", 20, `Timeout for each request in seconds. Default value is 20, \n
+// 									use 0 for infinite.`)
+// 	d         = flag.Int("d", 0, "Duration of requests to run. Default value is 0 sec.")
+// 	thinkTime = flag.Int("think-time", 0, "Time to think after request. Default value is 0 sec.")
+
+// 	h2                 = flag.Bool("h2", false, "Enable HTTP/2. Default FALSE")
+// 	disableCompression = flag.Bool("disable-compression", false, "Disable compression.")
+// 	disableKeepalive   = flag.Bool("disable-keepalive", false, `Disable keep-alive, prevents re-use of TCP
+// 																connections between different HTTP requests.`)
+// 	disableRedirects = flag.Bool("disable-redirects", false, "Disable following of HTTP redirects.")
+// 	enableTran       = flag.Bool("enable-tran", false, `  Enable transactional requests. Multiple urls
+// 															form a transactional requests.
+// 															For example: \"stress [options...] -enable-tran
+// 															http://localhost:8080,m:post,b:hi,x:http://127.0.0.1:8888
+// 															http://localhost:8888,m:post,B:/home/file.txt,thinkTime:2
+// 															[urls...]\".`)
+// )
+
+// func init() {
+// 	flag.Usage = usage
+// }
+
+// func usage() {
+// 	fmt.Fprintf(os.Stderr, `HTTP Stress
+// 		Usage: stress [options...] <url> || stress [options...] -enable-tran <urls...>
+// 		Options:
+
+// 		`)
+// 	flag.PrintDefaults()
+// }
 
 const (
 	headerRegexp = `^([\w-]+):\s*(.+)`
@@ -76,18 +100,18 @@ var usage = `Usage: stress [options...] <url> || stress [options...] -enable-tra
 
 Options:
   -n  Number of requests to run. Default value is 100.
-      If set to -1, the request has been sent, but the report will 
+      If set to -1, the request has been sent, but the report will
       not be output by default.
-  -c  Number of requests to run concurrently. 
-      Total number of requests cannot smaller than the concurrency level. 
+  -c  Number of requests to run concurrently.
+      Total number of requests cannot smaller than the concurrency level.
       Default value is 10.
   -d  Duration of requests to run. Default value is 0 sec.
   -o  Output file path. For example: /home/user or ./files.
-  
-  -h  Custom HTTP header. For example: 
+
+  -h  Custom HTTP header. For example:
       -h "Accept: text/html" -h "Content-Type: application/xml".
   -m  HTTP method, any of GET, POST, PUT, DELETE, HEAD, OPTIONS.
-  -t  Timeout for each request in seconds. Default value is 20, 
+  -t  Timeout for each request in seconds. Default value is 20,
       use 0 for infinite.
   -b  HTTP request body.
   -B  HTTP request body from file. For example:
@@ -96,24 +120,27 @@ Options:
 
   -h2 	 Enable HTTP/2.
   -host	 Set HTTP Host header.
-  
+
   -think-time           Time to think after request. Default value is 0 sec.
   -disable-compression  Disable compression.
   -disable-keepalive    Disable keep-alive, prevents re-use of TCP
                     	connections between different HTTP requests.
   -disable-redirects    Disable following of HTTP redirects.
-  -enable-tran          Enable transactional requests. Multiple urls 
-                        form a transactional requests. 
-                        For example: "stress [options...] -enable-tran 
-                        http://localhost:8080,m:post,b:hi,x:http://127.0.0.1:8888 
-                        http://localhost:8888,m:post,B:/home/file.txt,thinkTime:2 
+  -enable-tran          Enable transactional requests. Multiple urls
+                        form a transactional requests.
+                        For example: "stress [options...] -enable-tran
+                        http://localhost:8080,m:post,b:hi,x:http://127.0.0.1:8888
+                        http://localhost:8888,m:post,B:/home/file.txt,thinkTime:2
                         [urls...]".
 `
+
+//=============
 
 func main() {
 	flag.Usage = func() {
 		fmt.Fprint(os.Stderr, usage)
 	}
+
 	var hs headerSlice
 	flag.Var(&hs, "h", "")
 	flag.Parse()

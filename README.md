@@ -84,7 +84,7 @@ package main
 import (
 	"fmt"
 
-	stress "github.com/wenjiax/stress/stress"
+	stress "github.com/7Ethan/stress/stress"
 )
 
 func main() {
@@ -116,7 +116,7 @@ package main
 import (
 	"fmt"
 
-	stress "github.com/wenjiax/stress/stress"
+	stress "github.com/7Ethan/stress/stress"
 )
 
 func main() {
@@ -152,7 +152,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	stress "github.com/wenjiax/stress/stress"
+	stress "github.com/7Ethan/stress/stress"
 )
 
 func main() {
@@ -166,10 +166,10 @@ func main() {
 		RequestBefore: func(req *stress.Request, share stress.Share) {
 			req.Req.Header.Set("Content-Type", "text/html")
 			req.Req.Body = ioutil.NopCloser(bytes.NewReader([]byte("Hello Body")))
-			share["name"] = "wenjiax"
+			share["name"] = "Ethan"
 		},
 		ResponseAfter: func(res *http.Response, share stress.Share) {
-			name := share["name"] //name="wenjiax"
+			name := share["name"] 
 			fmt.Println(name)
 		},
 	}
