@@ -12,17 +12,40 @@ import (
 	"strings"
 	"time"
 
-	lbstress "github.com/SergeyChang/stress/stress"
+	s "github.com/7Ethan/stress/stress"
 )
 
-var (
-	m = flag.String("m", "GET", "")
-	// headers  = flag.String("h", "", "")
-	body     = flag.String("b", "", "")
-	bodyFile = flag.String("B", "", "")
+// var (
+// 	m = flag.String("m", "GET", "")
+// 	// headers  = flag.String("h", "", "")
+// 	body     = flag.String("b", "", "")
+// 	bodyFile = flag.String("B", "", "")
 
-	output    = flag.String("o", "", "")
-	proxyAddr = flag.String("x", "", "")
+// 	output    = flag.String("o", "", "")
+// 	proxyAddr = flag.String("x", "", "")
+// 	host      = flag.String("host", "", "")
+
+// 	n         = flag.Int("n", 100, "")
+// 	c         = flag.Int("c", 10, "")
+// 	t         = flag.Int("t", 20, "")
+// 	d         = flag.Int("d", 0, "")
+// 	thinkTime = flag.Int("think-time", 0, "")
+
+// 	h2                 = flag.Bool("h2", false, "")
+// 	disableCompression = flag.Bool("disable-compression", false, "")
+// 	disableKeepalive   = flag.Bool("disable-keepalive", false, "")
+// 	disableRedirects   = flag.Bool("disable-redirects", false, "")
+// 	enableTran         = flag.Bool("enable-tran", false, "")
+// )
+
+var (
+	m = flag.String("m", "GET", "HTTP method, any of GET, POST, PUT, DELETE, HEAD, OPTIONS.\n Default value is GET")
+	// headers  = flag.String("h", "", "")
+	body     = flag.String("b", "", "HTTP request body.")
+	bodyFile = flag.String("B", "", "HTTP request body from file. For example: \n/home/user/file.txt or ./file.txt.")
+
+	output    = flag.String("o", "", "Output file path. For example: /home/user or ./files.")
+	proxyAddr = flag.String("x", "", "HTTP Proxy address as host:port.")
 	host      = flag.String("host", "", "")
 
 	n         = flag.Int("n", 100, "")
@@ -36,6 +59,7 @@ var (
 	disableKeepalive   = flag.Bool("disable-keepalive", false, "")
 	disableRedirects   = flag.Bool("disable-redirects", false, "")
 	enableTran         = flag.Bool("enable-tran", false, "")
+	flag.Usage = usage
 )
 
 const (
@@ -116,7 +140,7 @@ func main() {
 		}
 	}
 	//Set parameters and global configuration.
-	task := &lbstress.Task{
+	task := &s.Task{
 		Number:             *n,
 		Concurrent:         *c,
 		Duration:           time.Duration(*d) * time.Second,
@@ -138,7 +162,7 @@ func main() {
 
 }
 
-func run(task *lbstress.Task, header http.Header) {
+func run(task *s.Task, header http.Header) {
 	//Parsing request body.
 	var bodyAll []byte
 	if *body != "" {
@@ -152,7 +176,7 @@ func run(task *lbstress.Task, header http.Header) {
 		bodyAll = content
 	}
 	//Run task.
-	err := task.Run(&lbstress.RequestConfig{
+	err := task.Run(&s.RequestConfig{
 		URLStr:  flag.Args()[0],
 		Method:  *m,
 		ReqBody: bodyAll,
@@ -163,8 +187,8 @@ func run(task *lbstress.Task, header http.Header) {
 	}
 }
 
-func runTran(task *lbstress.Task, header http.Header) {
-	var configs []*lbstress.RequestConfig
+func runTran(task *s.Task, header http.Header) {
+	var configs []*s.RequestConfig
 	for i, len := 0, flag.NArg(); i < len; i++ {
 		argstr := flag.Args()[i]
 		url := strings.Split(argstr, ",")[0]
@@ -203,7 +227,7 @@ func runTran(task *lbstress.Task, header http.Header) {
 		if thinkTimeMatch != nil {
 			thinkTime, _ = strconv.Atoi(thinkTimeMatch[1])
 		}
-		configs = append(configs, &lbstress.RequestConfig{
+		configs = append(configs, &s.RequestConfig{
 			URLStr:    url,
 			Method:    methodMatch[1],
 			ReqBody:   bodyAll,
