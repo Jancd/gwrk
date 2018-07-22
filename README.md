@@ -1,15 +1,13 @@
-# stress  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress) 
+# gark  [![Travis CI](https://travis-ci.org/7Ethan/stress.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress) 
 
 
-stress is an HTTP stress testing tool. Through this tool, you can do a stress test on the HTTP service and get detailed test results. It is inspired by hey.
+gwrk is an HTTP stress testing tool inspired by [hey](https://github.com/rakyll/hey). Through this tool, you can do a stress test on the HTTP service and get detailed test results. 
 
 ## Installation
 
 ```
-go get -u github.com/7Ethan/stress
+go get -u github.com/7Ethan/gark
 ```
-
-## wrk
  
 ## Features
  
@@ -21,12 +19,12 @@ go get -u github.com/7Ethan/stress
   
 ## Usage
 
-stress contains two usage, either via the command line or used as a package.
+gwrk contains two usage, either via the command line or used as a package.
 
 ### 1.Use command line.
 
 ```
-Usage: stress [options...] <url> || stress [options...] -enable-tran <urls...>
+Usage: gwrk [options...] <url> || gwrk [options...] -enable-tran <urls...>
 
 Options:
   -n  Number of requests to run. Default value is 100.
@@ -67,125 +65,18 @@ Options:
 For example: run a task.
 
 ```
-stress -n 1000 -c 10 -m GET http://localhost:8080
+gwrk -n 1000 -c 10 -m GET http://localhost:8080
 ```
 
 For example: run a transactional request composed of multiple URL.
 
 ```
-stress -n 1000 -c 10 -enable-tran http://localhost:8080,m:post,b:hi,x:http://127.0.0.1:8888 http://localhost:8888,m:post,B:/home/file.txt,thinkTime:2 
+gwrk -n 1000 -c 10 -enable-tran http://localhost:8080,m:post,b:hi,x:http://127.0.0.1:8888 http://localhost:8888,m:post,B:/home/file.txt,thinkTime:2 
 ```
 
  ### 2.Use package.
 
-For example: run a task.
-
-```go
-package main
-
-import (
-	"fmt"
-
-	stress "github.com/7Ethan/stress/stress"
-)
-
-func main() {
-	task := &stress.Task{
-		Duration:   10, //Continuous request for 10 seconds
-		Concurrent: 10,
-		ReportHandler: func(results []*stress.Result, totalTime time.Duration) {
-			//Processing result reporting function.
-			//If the function is passed in, the incoming function is used to process the report,
-			//otherwise the default function is used to process the report.
-		},
-	}
-	err := task.Run(&stress.RequestConfig{
-		URLStr: "http://localhost:8080/api/test",
-		Method: "GET",
-	})
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-```
-
-For example: run a transactional request composed of multiple URL.
-
-```go
-package main
-
-import (
-	"fmt"
-
-	stress "github.com/7Ethan/stress/stress"
-)
-
-func main() {
-	task := &stress.Task{
-		Number:     1000,
-		Concurrent: 10,
-	}
-	var configs []*stress.RequestConfig
-	configs = append(configs, &stress.RequestConfig{
-		URLStr: "http://localhost:8080/api/test",
-		Method: "GET",
-	})
-	configs = append(configs, &stress.RequestConfig{
-		URLStr: "http://localhost:8080/api/hello",
-		Method: "POST",
-	})
-	err := task.RunTran(configs...)
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-```
-
-Add event handling. Make some extra processing before each request, such as setting a different header or request body at a time.
-
-```go
-package main
-
-import (
-	"bytes"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-
-	stress "github.com/7Ethan/stress/stress"
-)
-
-func main() {
-	task := &stress.Task{
-		Number:     1000,
-		Concurrent: 10,
-	}
-	events := &stress.Events{
-		//Share is a container that is shared in the current transaction,
-		//you can access the required content.
-		RequestBefore: func(req *stress.Request, share stress.Share) {
-			req.Req.Header.Set("Content-Type", "text/html")
-			req.Req.Body = ioutil.NopCloser(bytes.NewReader([]byte("Hello Body")))
-			share["name"] = "Ethan"
-		},
-		ResponseAfter: func(res *http.Response, share stress.Share) {
-			name := share["name"] 
-			fmt.Println(name)
-		},
-	}
-	err := task.Run(&stress.RequestConfig{
-		URLStr: "http://localhost:8080/api/test",
-		Method: "GET",
-		Events: events,
-	})
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-```
+>TODO
 
 ## License
 
