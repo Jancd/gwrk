@@ -1,9 +1,11 @@
-# gwrk  [![Travis CI](https://travis-ci.org/7Ethan/gwrk.svg?branch=master)](https://travis-ci.org/7Ethan/stress)  [![Go Report Card](https://goreportcard.com/badge/7Ethan/stress)](https://goreportcard.com/report/7Ethan/stress) 
+# gwrk  
 
+[![Travis CI](https://travis-ci.org/Jancd/gwrk.svg?branch=master)](https://travis-ci.org/Jancd/stress)  [![Go Report Card](https://goreportcard.com/badge/Jancd/stress)](https://goreportcard.com/report/Jancd/stress) 
 
-gwrk is an HTTP stress testing tool inspired by [hey](https://github.com/rakyll/hey). Through this tool, you can do a stress test on the HTTP service and get detailed test results. 
+gwrk is an HTTP stress testing tool inspired by [hey](https://github.com/rakyll/hey). Through this tool, you can do a stress test on the HTTP service and get detailed test results.
  
 ## Features
+
 * Transactional task support
 * Support duration and total number of requests
 * Support package reference
